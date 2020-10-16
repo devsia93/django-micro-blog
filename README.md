@@ -1,2 +1,2 @@
 # django-micro-blog
- This testing app on django framework.
+In this project, I will try to make my blog on the django framework.
