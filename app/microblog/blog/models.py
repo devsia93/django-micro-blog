@@ -13,7 +13,7 @@ class Post(models.Model):
         return reverse('post_detail_url', kwargs={'slug':self.slug})
 
     def __str__(self):
-       return '{}'.format(self.title)
+       return self.title
 
     def check_available_tag(self):
         if len(self.tags.all()) > 0:
@@ -26,7 +26,7 @@ class Tag(models.Model):
     slug = models.SlugField(max_length=25, unique=True)
 
     def __str__(self):
-        return '{}'.format(self.title)
+        return self.title
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug':self.slug})
