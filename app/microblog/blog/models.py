@@ -1,13 +1,28 @@
 from django.db import models
 from django.shortcuts import reverse
+from django.utils.text import slugify
 
+from transliterate import translit, get_available_language_codes
+from time import time
 # Create your models here.
+
+
+def generation_slug(text):
+    new_slug=slugify(translit(u"".join(text), reversed=True))
+    return new_slug
+
+
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
-    slug = models.SlugField(max_length=75, unique=True)
+    slug = models.SlugField(max_length=75, blank=True, unique=True)
     body = models.TextField(blank=True, db_index=True) #blank - поле может быть пустым
     date_pub = models.DateTimeField(auto_now_add=True) #автоматически заполняется при сохранении в бд
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = generation_slug(self.title)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('post_detail_url', kwargs={'slug':self.slug})
