@@ -8,7 +8,7 @@ from time import time
 
 
 def generation_slug(text):
-    new_slug=slugify(translit(u"".join(text), reversed=True))
+    new_slug=slugify(translit(u"".join(text), 'ru', reversed=True))
     return new_slug
 
 
@@ -25,6 +25,8 @@ class Post(models.Model):
             self.slug = generation_slug(self.title)
         super().save(*args, **kwargs)
 
+    def get_delete_url(self):
+        return reverse('post_delete_url', kwargs={'slug':self.slug})
     
     def get_update_url(self):
         return reverse('post_update_url', kwargs={'slug':self.slug})
@@ -50,6 +52,9 @@ class Tag(models.Model):
 
     def get_update_url(self):
         return reverse('tag_update_url', kwargs={'slug':self.slug})
+
+    def get_delete_url(self):
+        return reverse('tag_delete_url', kwargs={'slug':self.slug})
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug':self.slug})
