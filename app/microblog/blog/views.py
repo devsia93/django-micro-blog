@@ -4,10 +4,15 @@ from django.views.generic import View
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 from .models import Post, Tag
 from .utils import *
 from .forms import TagForm, PostForm
+
+# constants
+POST_COUNT_ON_PAGE = 5
+# end constants
 
 # Create your views here.
 class PostDetail(ObjectDetailMixin, View):
@@ -16,7 +21,30 @@ class PostDetail(ObjectDetailMixin, View):
 
 def posts_list(request):
     posts = Post.objects.all()
-    return render(request, 'blog/index.html', context={'posts' : posts})
+    paginator = Paginator(posts, POST_COUNT_ON_PAGE)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+
+    is_paginated = page.has_other_pages()
+
+    if page.has_previous():
+        previous_url = '?page={}'.format(page.previous_page_number())
+    else:
+        previous_url = ''
+
+    if page.has_next():
+        next_url = '?page={}'.format(page.next_page_number())
+    else:
+        next_url = ''
+
+    context = {
+        'page_object' : page,
+        'is_paginated' : is_paginated,
+        'previous_url' : previous_url,
+        'next_url' : next_url
+    }
+    # http://127.0.0.1:8000/blog/?page=2
+    return render(request, 'blog/index.html', context=context)
 
 
 class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
