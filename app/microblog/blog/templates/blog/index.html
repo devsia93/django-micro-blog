@@ -7,7 +7,13 @@ Posts list
 {% endblock %}
 
 {% block content %}
-<h1 class="mb-5">Posts:</h1>
+
+{% if search_query %}
+        <h1 class="mb-5">Posts with "{{search_query}}":</h1>
+{% else %}
+        <h1 class="mb-5">Posts:</h1>
+{% endif %}
+
 {% for post in page_object.object_list %}
         {% include 'blog/includes/card_template.html' %}
 {% endfor %}
