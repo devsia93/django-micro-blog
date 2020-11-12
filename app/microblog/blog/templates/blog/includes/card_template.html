@@ -1,6 +1,6 @@
-<div class="card mb-4">
+<div class="card mb-4" background-color: lightblue>
   <div class="card-header">
-    {{ post.date_pub }}
+    {{ post.date_pub|date:"d M Y" }}
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>

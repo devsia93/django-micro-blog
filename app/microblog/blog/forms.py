@@ -15,10 +15,13 @@ class TagForm(forms.ModelForm):
 
     def clean_slug(self):
         new_slug = self.cleaned_data['slug'].lower()
+
         if new_slug == 'create':
             raise ValidationError('This name for slug should be changed. Name \'create\' already reserved the system.')
+
         if Tag.objects.filter(slug__iexact=new_slug).count():
             raise ValidationError('This tag already exists.')
+
         return new_slug
 
 
@@ -36,6 +39,8 @@ class PostForm(forms.ModelForm):
 
     def clean_slug_self(self):
         new_slug = self.cleaned_data['slug'].lower()
+
         if new_slug == 'create':
             raise ValidationError('This name for slug should be changed. Name \'create\' already reserved the system.')
+        
         return new_slug

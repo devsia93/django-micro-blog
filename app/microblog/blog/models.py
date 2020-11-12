@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 from transliterate import translit, get_available_language_codes
 from time import time
+import datetime
 # Create your models here.
 
 
@@ -19,7 +20,6 @@ class Post(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True) #автоматически заполняется при сохранении в бд
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
 
-    
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = generation_slug(self.title)
@@ -43,8 +43,10 @@ class Post(models.Model):
         else :
             return False
 
+
     class Meta:
         ordering = ['-date_pub']
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=15)
@@ -61,6 +63,7 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug':self.slug})
+
 
     class Meta:
         ordering = ['title']

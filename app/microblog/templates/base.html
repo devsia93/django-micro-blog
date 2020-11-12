@@ -63,8 +63,7 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
-            name="search"
-          />
+            name="search"/>
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
             Search
           </button>
@@ -80,16 +79,13 @@
           {% if is_paginated %}
           <nav aria-label="...">
             <ul class="pagination">
-              <li
-                class="page-item {% if not previous_url %}disabled{% endif %}"
-              >
+              <li class="page-item {% if not previous_url %}disabled{% endif %}">
                 <a
                   class="page-link"
                   href="{{previous_url}}"
                   tabindex="-1"
                   aria-disabled="true"
-                  >Previous</a
-                >
+                  >Previous</a>
               </li>
 
               {% for n in page_object.paginator.page_range %} 
