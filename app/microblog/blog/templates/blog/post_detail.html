@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class='mt-5'>
-        {{ post.title }}
-    </h1>
-    <p>
-        {{ post.body }} 
-    </p>
+    <h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
+    <p>{{ post.body }}</p>
+    
+    {% for comment in post.comments.all %}
+       {% include 'blog/comment_detail.html' %}
+    {% endfor %}
+
+    {% include 'blog/includes/comment_create_template.html' %}
 {% endblock %}

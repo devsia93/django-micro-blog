@@ -1,0 +1,24 @@
+<form action="{% url 'add_comment_to_post' post.slug %}" method="POST">
+ {% csrf_token %}
+<ul class="list-group list-group-flush mt-4" style="width: 25rem">
+  <label class="sr-only" for="inlineFormInputGroup">username</label>
+  <div class="input-group mb-2" style="width: 15rem">
+    <div class="input-group-prepend">
+      <div class="input-group-text">@</div>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="inlineFormInputGroup"
+      placeholder="username"/>
+  </div>
+
+  <li class="input-group pb-2 pr-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text" style="font-size: 8pt">Comment</span>
+    </div>
+    <textarea class="form-control" aria-label="Comment"></textarea>
+  </li>
+</ul>
+  <button type="submit" class="btn btn-dark mb-1">Submit</button>
+</form>

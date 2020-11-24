@@ -7,15 +7,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from .models import Post, Tag
+from .models import *
 from .utils import *
-from .forms import TagForm, PostForm
+from .forms import *
 
 # constants
 POST_COUNT_ON_PAGE = 5
 # end constants
 
-# Create your views here.
+
 class PostDetail(ObjectDetailMixin, View):
     model = Post
     template = 'blog/post_detail.html'
@@ -101,3 +101,18 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     template = 'blog/tag_delete_form.html'
     redirect_url = 'tags_list_url'
     raise_exception = True
+
+
+class CommentCreate(View):
+def add_comment_to_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', slug=post.slug)
+    else:
+            form = CommentForm()
+        return render(request, 'blog/post/', context={'form': form})

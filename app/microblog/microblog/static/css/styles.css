@@ -38,3 +38,22 @@ a.edit, a.delete{
 .col-6 {
     margin: auto;
 }
+
+.comment {
+    margin: 20px 0px 20px 20px;
+}
+
+.comment-count {
+    margin-top: 0;
+    float: right;
+    margin-bottom: 0;
+}
+
+/* .panel-body{
+  width: 500px;
+  margin: auto;
+  border: 1px solid #373737;
+  border-radius: 5px;
+  padding: 2px;
+} */
+

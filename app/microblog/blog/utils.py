@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 
 from .models import Post, Tag
 
+
 class ObjectDetailMixin:
     model = None
     template = None
@@ -45,6 +46,7 @@ class ObjectUpdateMixin:
             new_obj = bound_form.save()
             return redirect(new_obj)
         return render(request, self.template, context={'form:':bound_form, self.model.__name__.lower():tag})
+
 
 class ObjectDeleteMixin:
     model = None

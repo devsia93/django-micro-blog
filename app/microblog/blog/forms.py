@@ -1,9 +1,8 @@
 from django import forms
-from blog.models import Post, Tag
+from blog.models import Post, Tag, Comment
 from django.core.exceptions import ValidationError
 
 class TagForm(forms.ModelForm):
-
 
     class Meta:
         model = Tag
@@ -26,6 +25,7 @@ class TagForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    
     class Meta:
         model = Post
         fields = ['title', 'slug', 'body', 'tags']
@@ -44,3 +44,10 @@ class PostForm(forms.ModelForm):
             raise ValidationError('This name for slug should be changed. Name \'create\' already reserved the system.')
         
         return new_slug
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['author_name', 'text']
