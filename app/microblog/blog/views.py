@@ -104,15 +104,17 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 
 
 class CommentCreate(View):
+    model = Comment
+    
 def add_comment_to_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, slug__iexact=slug)
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
             comment.save()
-            return redirect('post_detail', slug=post.slug)
+            return redirect('post_detail', slug__iexact=slug)
     else:
-            form = CommentForm()
+        form = CommentForm()
         return render(request, 'blog/post/', context={'form': form})
