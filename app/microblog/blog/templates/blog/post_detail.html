@@ -1,16 +1,24 @@
 {% extends 'blog/base_blog.html' %}
+{% load static %}
 
 {% block title %}
     {{ post.title }} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
-    <h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+
+<div class="container">
+<h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
     <p>{{ post.body }}</p>
-    
+</div>
+
     {% for comment in post.comments.all %}
+        {% if comment.approved_comment %}
        {% include 'blog/comment_detail.html' %}
-    {% endfor %}
+       {% endif %}
+    {% endfor post.comments.all %}
 
     {% include 'blog/includes/comment_create_template.html' %}
-{% endblock %}
+
+{% endblock content %}

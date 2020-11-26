@@ -43,6 +43,12 @@ class Post(models.Model):
         else :
             return False
 
+    def count_of_approved_comments(self):
+        result = 0
+        for i in self.comments.all():
+            if i.approved_comment:
+                result += 1
+        return result
 
     class Meta:
         ordering = ['-date_pub']
@@ -82,7 +88,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
-
 
     class Meta:
         ordering = ['date_pub']

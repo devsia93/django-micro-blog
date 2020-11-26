@@ -1,15 +1,30 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 
-from .models import Post, Tag
+from .models import Post, Tag, Comment
+from .forms import CommentForm
 
 
 class ObjectDetailMixin:
     model = None
     template = None
+    comment_form = CommentForm()
 
     def get(self, request, slug):
         obj = get_object_or_404(self.model, slug__iexact=slug)
-        return render(request, self.template, context={self.model.__name__.lower():obj, 'admin_object':obj, 'detail':True})
+        if self.model.__name__.lower() == "post":
+            return render(request, self.template, context={self.model.__name__.lower():obj, 'admin_object':obj, 'detail':True, 'comment_form':self.comment_form})
+        else:
+            return render(request, self.template, context={self.model.__name__.lower():obj, 'admin_object':obj, 'detail':True})
+
+    def post(self, request, slug):
+        bound_form = CommentForm(data=request.POST)        
+        if (bound_form.is_valid()):
+            new_comment = bound_form.save(commit=False)
+            new_comment.post = get_object_or_404(Post, slug=slug)
+            new_comment.save()
+            # redirect_url = 'blog/post/' + slug
+            return redirect(request.path_info)
+        return render(request, self.template, context={'comment_form':bound_form})
 
 
 class ObjectCreateMixin:
