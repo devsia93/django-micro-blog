@@ -6,11 +6,16 @@
 {% endblock %}
 
 {% block content %}
+
+{% load bbcode_tags %}
+{% bbcode entry.bbcode_content %}
+
+
 <link rel="stylesheet" href="{% static 'css/post.css' %}">
 
 <div class="container">
 <h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
-    <p>{{ post.body }}</p>
+    {{ post.body.rendered }}
 </div>
 
     {% for comment in post.comments.all %}
