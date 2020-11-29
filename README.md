@@ -1,15 +1,19 @@
 # API:
 
 ## All responses for create objects will be contains this format:
-```{"successfully":true}```
+```json
+{"successfully":true}
+```
 or
-```{"successfully":false}```
+```json
+{"successfully":false}
+```
 
 ## Urls:
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/``` - get all posts.
 ## Example body response:
-```
+```json
 [
     {
 		"id": 11,
@@ -52,7 +56,7 @@ or
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/``` - get post within contains 'id_post'.
 ## Example body response:
-```
+```json
 {
 	"id": 11,
 	"tags": [
@@ -71,7 +75,7 @@ or
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/``` - get all tags.
 ## Example body response:
-```
+```json
 [
 	{
 		"title": "chess",
@@ -93,7 +97,7 @@ or
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/``` - get tag within contains 'id_tag'.
 ## Example body response:
-```
+```json
 {
 	"title": "django",
 	"slug": "django",
@@ -103,7 +107,7 @@ or
 
 ```[POST] [protocol]://www.[domain_name]:[port]/blog/api/tags/create/``` - create tag.  
 ## Example body request for tag creating:
-```
+```json
     {
 	"title":"test-api",
 	"slug":"test-api"
@@ -112,7 +116,7 @@ or
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/``` - get all comments.
 ## Example body response:
-```
+```json
 [
     {
 		"author_name": "ivan",
@@ -133,7 +137,7 @@ or
 
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>/``` - get comment within contains 'id_comment'.
 ## Example response body:
-```
+```json
 {
 	"author_name": "api",
 	"text": "test post",
@@ -145,7 +149,7 @@ or
 
 ```[POST] [protocol]://www.[domain_name]:[port]/blog/api/comments/<pk>/create``` - create comment, where 'pk' == id_post.
 ## Example request body:
-```
+```json
 {
 	"author_name":"api", 
 	"text":"test post"
