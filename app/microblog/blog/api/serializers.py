@@ -6,7 +6,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('title','slug', 'id')
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -21,4 +21,4 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('author_name', 'text', 'date_pub', 'post', 'id')

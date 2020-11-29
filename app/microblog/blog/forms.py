@@ -2,21 +2,22 @@ from django import forms
 from blog.models import Post, Tag, Comment
 from django.core.exceptions import ValidationError
 
+
 class TagForm(forms.ModelForm):
 
     class Meta:
         model = Tag
         fields = ['title', 'slug']
 
-        widgets = {'title':forms.TextInput(attrs={'class':'form-control'}),
-                   'slug':forms.TextInput(attrs={'class':'form-control'})}
-
+        widgets = {'title': forms.TextInput(attrs={'class': 'form-control'}),
+                   'slug': forms.TextInput(attrs={'class': 'form-control'})}
 
     def clean_slug(self):
         new_slug = self.cleaned_data['slug'].lower()
 
         if new_slug == 'create':
-            raise ValidationError('This name for slug should be changed. Name \'create\' already reserved the system.')
+            raise ValidationError(
+                'This name for slug should be changed. Name \'create\' already reserved the system.')
 
         if Tag.objects.filter(slug__iexact=new_slug).count():
             raise ValidationError('This tag already exists.')
@@ -25,29 +26,30 @@ class TagForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
-    
+
     class Meta:
         model = Post
         fields = ['title', 'slug', 'body', 'tags']
 
         widgets = {
-            'title':forms.TextInput(attrs={'class':'form-control'}),
-            'slug':forms.TextInput(attrs={'class':'form-control'}),
-            'body':forms.Textarea(attrs={'class':'form-control'}),
-            'tags':forms.SelectMultiple(attrs={'class':'form-control'})
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control'}),
+            'body': forms.Textarea(attrs={'class': 'form-control'}),
+            'tags': forms.SelectMultiple(attrs={'class': 'form-control'})
         }
 
     def clean_slug_self(self):
         new_slug = self.cleaned_data['slug'].lower()
 
         if new_slug == 'create':
-            raise ValidationError('This name for slug should be changed. Name \'create\' already reserved the system.')
-        
+            raise ValidationError(
+                'This name for slug should be changed. Name \'create\' already reserved the system.')
+
         return new_slug
 
 
 class CommentForm(forms.ModelForm):
-    author_name=forms.TextInput()
+    author_name = forms.TextInput()
     text = forms.Textarea()
 
     class Meta:
@@ -55,7 +57,6 @@ class CommentForm(forms.ModelForm):
         fields = ['author_name', 'text']
 
         widgets = {
-             'author_name':forms.TextInput(attrs={'class':'form-control', 'id':'inlineFormInputGroup', 'placeholder':'nickname', 'type':'text' }),
-             'text':forms.Textarea(attrs={'class':'form-control', 'aria-label':'Comment', 'type':'text', 'rows':4})
-             }
-
+            'author_name': forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup', 'placeholder': 'nickname', 'type': 'text'}),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'aria-label': 'Comment', 'type': 'text', 'rows': 4})
+        }

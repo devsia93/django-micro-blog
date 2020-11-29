@@ -1,6 +1,6 @@
 
 class ObjectDetailMixin:
-    
+
     queryset = None
     serializer_class = None
     argument = None

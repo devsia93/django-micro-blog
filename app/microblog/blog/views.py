@@ -21,11 +21,13 @@ class PostDetail(ObjectDetailMixin, View):
     template = 'blog/post_detail.html'
     comment_form = CommentForm
 
+
 def posts_list(request):
     search_query = request.GET.get('search', '')
 
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+        posts = Post.objects.filter(
+            Q(title__icontains=search_query) | Q(body__icontains=search_query))
     else:
         posts = Post.objects.all()
 
@@ -45,11 +47,11 @@ def posts_list(request):
         next_url = ''
 
     context = {
-        'page_object' : page,
-        'is_paginated' : is_paginated,
-        'previous_url' : previous_url,
-        'next_url' : next_url,
-        'search_query' : search_query
+        'page_object': page,
+        'is_paginated': is_paginated,
+        'previous_url': previous_url,
+        'next_url': next_url,
+        'search_query': search_query
     }
     # http://127.0.0.1:8000/blog/?page=2
     return render(request, 'blog/index.html', context=context)
@@ -79,9 +81,10 @@ class TagDetail(ObjectDetailMixin, View):
     model = Tag
     template = 'blog/tag_detail.html'
 
+
 def tags_list(request):
     tags = Tag.objects.all()
-    return render(request, 'blog/tags_list.html', context={'tags':tags})
+    return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
 class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):
