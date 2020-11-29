@@ -9,10 +9,11 @@ or
 {"successfully":false}
 ```
 
-## Urls:
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/``` - get all posts.
-## Example body response:
+## Get all posts:
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/```
+
+### Example body response:
 ```json
 [
     {
@@ -54,8 +55,11 @@ or
 ]
 ```
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/``` - get post within contains 'id_post'.
-## Example body response:
+
+## Get post within contains 'id_post':
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/```
+
+### Example body response:
 ```json
 {
 	"id": 11,
@@ -73,8 +77,11 @@ or
 }
 ```
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/``` - get all tags.
-## Example body response:
+
+## Get all tags:
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/```
+
+### Example body response:
 ```json
 [
 	{
@@ -95,8 +102,11 @@ or
 ]
 ```
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/``` - get tag within contains 'id_tag'.
-## Example body response:
+
+## Get tag within contains 'id_tag':
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/```
+
+### Example body response:
 ```json
 {
 	"title": "django",
@@ -105,8 +115,11 @@ or
 }
 ```
 
-```[POST] [protocol]://www.[domain_name]:[port]/blog/api/tags/create/``` - create tag.  
-## Example body request for tag creating:
+
+## Create tag:
+```[POST] [protocol]://www.[domain_name]:[port]/blog/api/tags/create/```  
+
+### Example body request for tag creating:
 ```json
     {
 	"title":"test-api",
@@ -114,8 +127,11 @@ or
     } 
 ```
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/``` - get all comments.
-## Example body response:
+
+## Get all comments:
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/```
+
+### Example body response:
 ```json
 [
     {
@@ -135,8 +151,11 @@ or
 ]
 ```
 
-```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>/``` - get comment within contains 'id_comment'.
-## Example response body:
+
+## Get comment within contains 'id_comment':
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>/```
+
+### Example response body:
 ```json
 {
 	"author_name": "api",
@@ -147,8 +166,11 @@ or
 }
 ```
 
-```[POST] [protocol]://www.[domain_name]:[port]/blog/api/comments/<pk>/create``` - create comment, where 'pk' == id_post.
-## Example request body:
+
+## Create comment, where 'pk' == id_post:
+```[POST] [protocol]://www.[domain_name]:[port]/blog/api/comments/<pk>/create```
+
+### Example request body:
 ```json
 {
 	"author_name":"api", 
