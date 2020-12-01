@@ -2,35 +2,60 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.viewsets import ModelViewSet
 from ..models import *
 from .serializers import *
 from .utils import *
 
 
-class TagListView(generics.ListAPIView):
-    queryset = Tag.objects.all()
+class TagViewSet(ModelViewSet):
     serializer_class = TagSerializer
-
-
-class TagDetailView(ObjectDetailMixin, generics.RetrieveAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-    argument = 'id_tag'
-
-
-class TagCreateView(APIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    def post(self, request, format=None):
-        tag = Tag(title=request.data['title'], slug=request.data['slug'])
-        serializer = TagSerializer(data=tag)
-        if serializer.is_valid(raise_exception=True):
-            tag_saved = serializer.save()
-            return Response({'successfully':True})
-        return Response({'successfully':False})
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return (IsAuthenticated(),)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = get_object_or_404(Tag, id=self.kwargs['id_tag'])
+        serializer = TagSerializer(instance=instance)
+        return Response(serializer.data)
+    
+    # def create(self, request, *args, **kwargs):
+    #     serializer = TagSerializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
+
+# class TagListView(generics.ListAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = TagSerializer
+
+
+# class TagDetailView(ObjectDetailMixin, generics.RetrieveAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = TagSerializer
+#     argument = 'id_tag'
+
+
+# class TagCreateView(APIView):
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
+
+#     def post(self, request, format=None):
+#         tag = Tag(title=request.data['title'], slug=request.data['slug'])
+#         serializer = TagSerializer(data=tag)
+#         if serializer.is_valid(raise_exception=True):
+#             tag_saved = serializer.save()
+#             return Response({'successfully':True})
+#         return Response({'successfully':False})
 
 
 class PostListView(generics.ListAPIView):
