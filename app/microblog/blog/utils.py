@@ -22,6 +22,7 @@ class ObjectDetailMixin:
             new_comment = bound_form.save(commit=False)
             new_comment.post = get_object_or_404(Post, slug=slug)
             new_comment.save()
+            # redirect_url = 'blog/post/' + slug
             return redirect(request.path_info)
         return render(request, self.template, context={'comment_form':bound_form})
 

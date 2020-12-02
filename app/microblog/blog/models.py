@@ -5,7 +5,6 @@ from django.utils.text import slugify
 from transliterate import translit, get_available_language_codes
 from time import time
 import datetime
-from precise_bbcode.fields import BBCodeTextField
 
 
 def generation_slug(text):
@@ -16,14 +15,14 @@ def generation_slug(text):
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
     slug = models.SlugField(max_length=75, blank=True, unique=True)
-    body = BBCodeTextField(blank=True, db_index=True) #blank - поле может быть пустым
+    body = models.TextField(blank=True, db_index=True) #blank - поле может быть пустым
     date_pub = models.DateTimeField(auto_now_add=True) #автоматически заполняется при сохранении в бд
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = generation_slug(self.title)
-        self.title = '. '.join(map(lambda s: s.strip().capitalize(), self.title.split('. ')))
+        self.title = '. '.join(map(lambda s: s.strip().capitalize(), self.title.split('.')))
         super().save(*args, **kwargs)
 
     def get_delete_url(self):

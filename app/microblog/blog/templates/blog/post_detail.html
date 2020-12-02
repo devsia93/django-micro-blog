@@ -6,23 +6,34 @@
 {% endblock %}
 
 {% block content %}
-
-{% load bbcode_tags %}
-{% bbcode entry.bbcode_content %}
-
-
 <link rel="stylesheet" href="{% static 'css/post.css' %}">
+
 
 <div class="container">
 <h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
-    {{ post.body.rendered }}
+    <p>{{ post.body }}</p>
 </div>
 
+{% if post.check_available_tag %} 
+    <div class="card mt-2">
+    <div class="card-body">Tags: {% for tag in post.tags.all %}
+    <a href="{{ tag.get_absolute_url }}"> {{ tag.title }}</a>
+    {% endfor %}    
+    </div>
+    </div>
+ {% endif %}
+
+{% if post.comments.all %}
+<div class="comments mt-5">
+<h2>Comments:</h2>
     {% for comment in post.comments.all %}
         {% if comment.approved_comment %}
        {% include 'blog/comment_detail.html' %}
        {% endif %}
     {% endfor post.comments.all %}
+</div>
+
+{% endif %}
 
     {% include 'blog/includes/comment_create_template.html' %}
 
