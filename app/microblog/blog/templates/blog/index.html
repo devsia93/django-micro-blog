@@ -5,9 +5,9 @@
 {% block content %}
 
 {% if search_query %}
-        <h1 class="mb-5">Posts with "{{search_query}}":</h1>
+        <h1 class="mb-3">Posts with "{{search_query}}":</h1>
 {% else %}
-        <h1 class="mb-5">Posts:</h1>
+        <h1 class="mb-3">Posts:</h1>
 {% endif %}
 
 {% for post in page_object.object_list %}

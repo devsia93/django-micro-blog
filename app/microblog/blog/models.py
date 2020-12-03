@@ -2,6 +2,8 @@ from django.db import models
 from django.shortcuts import reverse
 from django.utils.text import slugify
 
+from precise_bbcode.fields import BBCodeTextField
+
 from transliterate import translit, get_available_language_codes
 from time import time
 import datetime
@@ -82,7 +84,7 @@ class Comment(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='comments')
-    text = models.TextField()
+    text = BBCodeTextField()
     approved_comment = models.BooleanField(default=False)
 
     def approve(self):
@@ -90,7 +92,7 @@ class Comment(models.Model):
         self.save()
 
     def __str__(self):
-        return self.text
+        return str(self.text)
 
     class Meta:
         ordering = ['date_pub']

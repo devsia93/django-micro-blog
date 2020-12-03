@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import filters
 from ..models import *
 from .serializers import *
 from .utils import *
@@ -14,6 +15,8 @@ class TagViewSet(ModelViewSet):
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     authentication_classes = (TokenAuthentication,)
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['id']
 
 
 class PostViewSet(ModelViewSet):
@@ -31,7 +34,7 @@ class CommentViewSet(ModelViewSet):
     #     if self.request.method == "POST":
     #         return (IsAuthenticated(),)
     #     el
-            
+
     # def get_object(self):
     #     hash_id = self.kwargs.get(self.lookup_url_kwarg, None)
     #     if hash_id is not None:
@@ -45,15 +48,13 @@ class CommentViewSet(ModelViewSet):
     #     instance = get_object_or_404(Tag, id=self.kwargs['id_tag'])
     #     serializer = TagSerializer(instance=instance)
     #     return Response(serializer.data)
-    
+
     # def create(self, request, *args, **kwargs):
     #     serializer = TagSerializer(data=request.data)
     #     serializer.is_valid(raise_exception=True)
     #     self.perform_create(serializer)
     #     headers = self.get_success_headers(serializer.data)
     #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
 
 
 # class TagListView(generics.ListAPIView):

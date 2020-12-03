@@ -1,14 +1,32 @@
-# API:
+# API documentation:
 
-## All responses for create objects will be contains this format:
+# Invalid requests
+
+## Example body response when [POST, DELETE] request have not contains token authorization:
 ```json
-{"successfully":true}
-```
-or
-```json
-{"successfully":false}
+{
+	"detail": "Authentication credentials were not provided."
+}
 ```
 
+
+## Example body response when post.slug(model) of [POST] request is equal to any post.slug in database:   
+```json
+{
+	"slug": [
+		"post with this slug already exists."
+	]
+}
+```
+
+
+## Example body response when [POST] request to create post with tag.id which without in database:
+```json
+{"tags":["Invalid pk \"234\" - object does not exist."]}
+```
+
+
+# Posts
 
 ## Get all posts:
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/```
@@ -16,67 +34,90 @@ or
 ### Example body response:
 ```json
 [
-    {
-		"id": 11,
+	{
+		"id": 24,
+		"slug": "test-api",
+		"title": "Test-api",
+		"body": "test-api",
 		"tags": [
-			{
-				"title": "django",
-				"slug": "django"
-			}
+			1,
+			3
 		],
-		"title": "Some titlle",
-		"slug": "some-titlle",
-		"_body_rendered": "some body",
-		"body": "some body",
-		"date_pub": "2020-11-09T14:00:53.822745Z"
+		"date_pub": "2020-12-03T21:02:21.797154Z",
+		"comments": []
 	},
 	{
-		"id": 7,
+		"id": 18,
+		"slug": "new-record-rating-on-chesscom",
+		"title": "New record rating on chess.com",
+		"body": "Hello! My new rating on chess.com - 2200",
 		"tags": [
-			{
-				"title": "chess",
-				"slug": "chess"
-			},
-			{
-				"title": "django",
-				"slug": "django"
-			},
-			{
-				"title": "framework",
-				"slug": "framework"
-			}
+			5
 		],
-		"title": "First post. Это первый пост. Hello",
-		"slug": "first-post-1",
-		"_body_rendered": "Тут какой-то текст, пока не будем углубляться...update test",
-		"body": "Тут какой-то текст, пока не будем углубляться...update test",
-		"date_pub": "2020-10-21T19:06:44.296730Z"
-	}
+		"date_pub": "2020-11-12T16:48:16.077142Z",
+		"comments": [
+			1,
+			2,
+			4,
+			17,
+			22,
+			23
+		]
+	}	
 ]
 ```
 
 
-## Get post within contains 'id_post':
+## Get post within 'id_post':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/```
 
 ### Example body response:
 ```json
 {
-	"id": 11,
+	"id": 24,
+	"slug": "test-api",
+	"title": "Test-api",
+	"body": "test-api",
 	"tags": [
-		{
-			"title": "django",
-			"slug": "django"
-		}
+		1,
+		3
 	],
-	"title": "Some titlle",
-	"slug": "some-titlle",
-	"_body_rendered": "some body",
-	"body": "some body",
-	"date_pub": "2020-11-09T14:00:53.822745Z"
+	"date_pub": "2020-12-03T21:02:21.797154Z",
+	"comments": []
 }
 ```
 
+
+## Create new post:
+```[POST] [protocol]://www.[domain_name]:[port]/blog/api/posts/```
+
+### Example body request:
+```json
+{
+	"slug": "test-api",
+	"title": "test-api",
+	"body": "test-api",
+	"tags":["1","3"]
+}
+```
+
+### Example body response:
+```json
+{"id":23,"slug":"test-api","title":"Test-api","body":"test-api","tags":[1,3],"date_pub":"2020-12-03T20:29:43.292398Z"}
+```
+
+
+## Delete post
+```[DELETE] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>```
+
+### Example body request:
+This method have not request body.
+
+### Example body response:
+This method does not return data.
+
+
+# Tags
 
 ## Get all tags:
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/```
@@ -85,25 +126,20 @@ or
 ```json
 [
 	{
-		"title": "chess",
-		"slug": "chess",
-		"id": 5
-	},
-	{
-		"title": "django",
+		"id": 1,
 		"slug": "django",
-		"id": 1
+		"title": "django"
 	},
 	{
-		"title": "framework",
+		"id": 3,
 		"slug": "framework",
-		"id": 3
+		"title": "framework"
 	}
 ]
 ```
 
 
-## Get tag within contains 'id_tag':
+## Get tag within 'id_tag':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/```
 
 ### Example body response:
@@ -119,7 +155,7 @@ or
 ## Create tag:
 ```[POST] [protocol]://www.[domain_name]:[port]/blog/api/tags/create/```  
 
-### Example body request for tag creating:
+### Example body request:
 ```json
     {
 	"title":"test-api",
@@ -127,6 +163,27 @@ or
     } 
 ```
 
+### Example body response:
+```json
+{
+	"id": 14,
+	"slug": "test-api",
+	"title": "test-api"
+}
+```
+
+
+## Delete tag
+```[DELETE] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>```
+
+### Example body request:
+This method have not request body.
+
+### Example body response:
+This method does not return data.
+
+
+# Comments
 
 ## Get all comments:
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/```
@@ -134,46 +191,95 @@ or
 ### Example body response:
 ```json
 [
+   {
+		"id": 1,
+		"post": 1,
+        "author_name": "Ivan",
+        "text": "Cheers!",
+        "date_pub": "2020-12-01T20:53:48.443631Z",
+        "approved_comment": true
+    },
     {
-		"author_name": "ivan",
-		"text": "Cheer!",
-		"date_pub": "2020-11-24T19:57:32.811897Z",
-		"post": 18,
-        "id":2
-	},
-	{
-		"author_name": "ivan",
-		"text": "It's quite hard to understand what is happening here, it seems that there is an indent block...",
-		"date_pub": "2020-11-24T20:37:49.769463Z",
-		"post": 17,
-        "id":3
-	}
+		"id": 2,
+		"post": 1,
+        "author_name": "Ivan",
+        "text": "Congratulations!",
+        "date_pub": "2020-12-01T20:54:04.905761Z",
+        "approved_comment": true
+    }
 ]
 ```
 
 
-## Get comment within contains 'id_comment':
+## Get comment within 'id_comment':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>/```
 
 ### Example response body:
 ```json
 {
-	"author_name": "api",
-	"text": "test post",
-	"date_pub": "2020-11-28T20:41:52.255696Z",
-	"post": 18,
-	"id": 22
+	"id": 1,
+	"post": 1,
+    "author_name": "Ivan",
+    "text": "Cheers!",
+    "date_pub": "2020-12-01T20:53:48.443631Z",
+    "approved_comment": true
 }
 ```
 
 
-## Create comment, where 'pk' == id_post:
-```[POST] [protocol]://www.[domain_name]:[port]/blog/api/comments/<pk>/create```
+## Create comment:
+```[POST] [protocol]://www.[domain_name]:[port]/blog/api/comments/```
 
 ### Example request body:
 ```json
 {
+	"post":24,
 	"author_name":"api", 
 	"text":"test post"
+}
+```
+
+### Example response body:
+```json
+{
+	"id": 25,
+	"author_name": "api",
+	"text": "test post",
+	"date_pub": "2020-12-03T21:51:47.930005Z",
+	"approved_comment": false,
+	"post": 24
+}
+```
+
+
+## Delete comment:
+```[DELETE] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>```
+
+### Example body request:
+This method have not request body.
+
+### Example body response:
+This method does not return data.
+
+
+## Update comment:
+```[PATCH] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>```
+
+### Example body request:
+```json
+{
+	"approved_comment": true
+}
+```
+
+### Example body response:
+```json
+{
+	"id": 9,
+	"author_name": "test",
+	"text": "test",
+	"date_pub": "2020-11-26T18:33:35.574768Z",
+	"approved_comment": true,
+	"post": 17
 }
 ```

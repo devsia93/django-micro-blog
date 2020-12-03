@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block content %}
+
+{% load static %}
 <link rel="stylesheet" href="{% static 'css/post.css' %}">
 
 
 <div class="container">
 <h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
-    <p>{{ post.body }}</p>
+    <p>{{ post.body.rendered }}</p>
 </div>
 
 {% if post.check_available_tag %} 
