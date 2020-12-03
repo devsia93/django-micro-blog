@@ -8,39 +8,42 @@ import datetime
 
 
 def generation_slug(text):
-    new_slug=slugify(translit(u"".join(text), 'ru', reversed=True))
+    new_slug = slugify(translit(u"".join(text), 'ru', reversed=True))
     return new_slug
 
 
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
     slug = models.SlugField(max_length=75, blank=True, unique=True)
-    body = models.TextField(blank=True, db_index=True) #blank - поле может быть пустым
-    date_pub = models.DateTimeField(auto_now_add=True) #автоматически заполняется при сохранении в бд
+    # blank - поле может быть пустым
+    body = BBCodeTextField(blank=True, db_index=True)
+    # автоматически заполняется при сохранении в бд
+    date_pub = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = generation_slug(self.title)
-        self.title = '. '.join(map(lambda s: s.strip().capitalize(), self.title.split('.')))
+        self.title = '. '.join(
+            map(lambda s: s.strip().capitalize(), self.title.split('. ')))
         super().save(*args, **kwargs)
 
     def get_delete_url(self):
-        return reverse('post_delete_url', kwargs={'slug':self.slug})
-    
+        return reverse('post_delete_url', kwargs={'slug': self.slug})
+
     def get_update_url(self):
-        return reverse('post_update_url', kwargs={'slug':self.slug})
+        return reverse('post_update_url', kwargs={'slug': self.slug})
 
     def get_absolute_url(self):
-        return reverse('post_detail_url', kwargs={'slug':self.slug})
+        return reverse('post_detail_url', kwargs={'slug': self.slug})
 
     def __str__(self):
-       return self.title
+        return self.title
 
     def check_available_tag(self):
         if len(self.tags.all()) > 0:
             return True
-        else :
+        else:
             return False
 
     def count_of_approved_comments(self):
@@ -62,14 +65,13 @@ class Tag(models.Model):
         return self.title
 
     def get_update_url(self):
-        return reverse('tag_update_url', kwargs={'slug':self.slug})
+        return reverse('tag_update_url', kwargs={'slug': self.slug})
 
     def get_delete_url(self):
-        return reverse('tag_delete_url', kwargs={'slug':self.slug})
+        return reverse('tag_delete_url', kwargs={'slug': self.slug})
 
     def get_absolute_url(self):
-        return reverse('tag_detail_url', kwargs={'slug':self.slug})
-
+        return reverse('tag_detail_url', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['title']
@@ -78,7 +80,8 @@ class Tag(models.Model):
 class Comment(models.Model):
     author_name = models.CharField(max_length=15, db_index=True)
     date_pub = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     approved_comment = models.BooleanField(default=False)
 

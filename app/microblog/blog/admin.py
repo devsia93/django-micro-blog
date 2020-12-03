@@ -13,7 +13,7 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     list_display_links = ('title', 'slug')
     search_fields = ('title', 'slug')
- 
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('author_name', 'text', 'post')
