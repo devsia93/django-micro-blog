@@ -1,6 +1,0 @@
-{
-    // "python.pythonPath": "/home/ivan/Documents/projects/python/django-micro-blog/app/venv/bin/python3"
-    "python.pythonPath": "/home/ivan/Documents/projects/python/django-micro-blog/app/venv/bin/python3",
-    "python.venvPath": "/home/ivan/Documents/projects/django-micro-blog/app/venv/bin/activate",
-    "python.venvFolders": ["/home/ivan/Documents/projects/django-micro-blog/app/venv/bin/"]
-}

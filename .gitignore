@@ -125,3 +125,5 @@ dmypy.json
 #security
 settings.py
 .admin
+.vscode*
+.idea*
