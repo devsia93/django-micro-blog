@@ -126,3 +126,4 @@ dmypy.json
 settings.py
 .admin
 .idea*
+app/microblog.tar.xz
