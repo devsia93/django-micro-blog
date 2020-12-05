@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
 from ..models import *
@@ -15,8 +15,18 @@ class TagViewSet(ModelViewSet):
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     authentication_classes = (TokenAuthentication,)
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['id']
+
+
+class PostsOfTagView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    authentication_classes = (TokenAuthentication,)
+
+
+    def get(self, request, pk):
+        posts = Post.objects.filter(tags=get_object_or_404(Tag, pk=pk))
+        response_data = PostSerializer(posts, many=True)
+        return Response(response_data.data)
 
 
 class PostViewSet(ModelViewSet):
@@ -25,15 +35,29 @@ class PostViewSet(ModelViewSet):
     authentication_classes = (TokenAuthentication,)
 
 
+class CommentsOfPostView(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    authentication_classes = (TokenAuthentication,)
+    
+
+    def get(self, request, pk):
+        comments = Comment.objects.filter(post=get_object_or_404(Post, pk=pk))
+        response_data = CommentSerializer(comments, many=True)
+        return Response(response_data.data)
+
+
 class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     authentication_classes = (TokenAuthentication,)
 
-    # def get_permissions(self):
-    #     if self.request.method == "POST":
-    #         return (IsAuthenticated(),)
-    #     el
+    def get_permissions(self):
+        if self.action in ('list', 'create', 'retrieve'):
+            permission_classes = [AllowAny, ]
+        else:
+            permission_classes = [IsAuthenticated, ]
+        return [permission() for permission in permission_classes]
 
     # def get_object(self):
     #     hash_id = self.kwargs.get(self.lookup_url_kwarg, None)
@@ -88,10 +112,15 @@ class CommentViewSet(ModelViewSet):
 #     serializer_class = PostSerializer
 
 
-# class PostDetailView(ObjectDetailMixin, generics.RetrieveAPIView):
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-#     argument = 'id_post'
+# class CommentDetailView(generics.ListAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+
+#     def get(self, request, pk):
+#         post = Post.objects.get(pk=self.kwargs.get('pk'))
+#         comments = self.queryset.filter(post=post)
+#         response_data = CommentSerializer(comments, many=True)
+#         return Response({"comments":response_data.data})
 
 
 # class CommentListView(generics.ListAPIView):

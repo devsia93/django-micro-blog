@@ -11,9 +11,10 @@ project_router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     *project_router.urls,
-    # path('posts/', PostListView.as_view()),
-    # path('posts/<int:id_post>/', PostDetailView.as_view()),
+    path('tags/<int:pk>/posts/', PostsOfTagView.as_view()),
+    path('posts/<int:pk>/comments/', CommentsOfPostView.as_view()),
 
+    # path('posts/', PostListView.as_view()),
     # path('tags/', TagViewSet.as_view({'get':'list'})),
     # path('tags/create/', TagViewSet.as_view({'post':'create'})),
     # path('tags/<int:id_tag>', TagViewSet.as_view({'get':'retrieve'})),

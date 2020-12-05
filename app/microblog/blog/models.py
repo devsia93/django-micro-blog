@@ -48,6 +48,9 @@ class Post(models.Model):
         else:
             return False
 
+    def get_all_comments(self):
+        return self.comments
+
     def count_of_approved_comments(self):
         result = 0
         for i in self.comments.all():
@@ -95,4 +98,4 @@ class Comment(models.Model):
         return str(self.text)
 
     class Meta:
-        ordering = ['date_pub']
+        ordering = ['approved_comment', 'date_pub']

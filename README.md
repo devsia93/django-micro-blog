@@ -10,6 +10,7 @@
 ```
 
 
+
 ## Example body response when post.slug(model) of [POST] request is equal to any post.slug in database:   
 ```json
 {
@@ -20,10 +21,21 @@
 ```
 
 
+
 ## Example body response when [POST] request to create post with tag.id which without in database:
 ```json
 {"tags":["Invalid pk \"234\" - object does not exist."]}
 ```
+
+
+
+## Example body response when [GET] request to get post/tag/comment which without in database:
+```json
+{
+    "detail": "Not found."
+}
+```
+
 
 
 # Posts
@@ -35,40 +47,59 @@
 ```json
 [
 	{
-		"id": 24,
-		"slug": "test-api",
-		"title": "Test-api",
-		"body": "test-api",
-		"tags": [
-			1,
-			3
-		],
-		"date_pub": "2020-12-03T21:02:21.797154Z",
-		"comments": []
-	},
-	{
-		"id": 18,
-		"slug": "new-record-rating-on-chesscom",
-		"title": "New record rating on chess.com",
-		"body": "Hello! My new rating on chess.com - 2200",
-		"tags": [
-			5
-		],
-		"date_pub": "2020-11-12T16:48:16.077142Z",
-		"comments": [
-			1,
-			2,
-			4,
-			17,
-			22,
-			23
-		]
-	}	
+        "id": 12,
+        "slug": "test-api",
+        "title": "Test-api",
+        "body": "test-api",
+        "tags": [],
+        "date_pub": "2020-12-03T20:10:03.508144Z",
+        "comments": [
+            7
+        ]
+    },
+    {
+        "id": 6,
+        "slug": "test-test",
+        "title": "Test test",
+        "body": "test",
+        "tags": [],
+        "date_pub": "2020-12-01T21:06:00.541259Z",
+        "comments": []
+    }	
 ]
 ```
 
 
-## Get post within 'id_post':
+
+## Get all posts by 'id_tag':
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/posts/```
+
+```json
+[	
+	{
+        "id": 1,
+        "slug": "my-first-post",
+        "title": "My first post",
+        "body": "It's quite hard to understand what is happening here, it seems that there is static roots...",
+        "tags": [
+            2,
+            3,
+            1
+        ],
+        "date_pub": "2020-12-01T20:53:15.212776Z",
+        "comments": [
+            1,
+            2,
+            5,
+            6
+        ]
+    }
+]
+```
+
+
+
+## Get post by 'id_post':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/```
 
 ### Example body response:
@@ -88,6 +119,7 @@
 ```
 
 
+
 ## Create new post:
 ```[POST] [protocol]://www.[domain_name]:[port]/blog/api/posts/```
 
@@ -103,8 +135,16 @@
 
 ### Example body response:
 ```json
-{"id":23,"slug":"test-api","title":"Test-api","body":"test-api","tags":[1,3],"date_pub":"2020-12-03T20:29:43.292398Z"}
+{
+	"id":23,
+	"slug":"test-api",
+	"title":"Test-api",
+	"body":"test-api",
+	"tags":[1,3],
+	"date_pub":"2020-12-03T20:29:43.292398Z"
+}
 ```
+
 
 
 ## Delete post
@@ -115,6 +155,7 @@ This method have not request body.
 
 ### Example body response:
 This method does not return data.
+
 
 
 # Tags
@@ -139,7 +180,8 @@ This method does not return data.
 ```
 
 
-## Get tag within 'id_tag':
+
+## Get tag by 'id_tag':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>/```
 
 ### Example body response:
@@ -150,6 +192,7 @@ This method does not return data.
 	"id": 1
 }
 ```
+
 
 
 ## Create tag:
@@ -173,6 +216,7 @@ This method does not return data.
 ```
 
 
+
 ## Delete tag
 ```[DELETE] [protocol]://www.[domain_name]:[port]/blog/api/tags/<int:id_tag>```
 
@@ -181,6 +225,7 @@ This method have not request body.
 
 ### Example body response:
 This method does not return data.
+
 
 
 # Comments
@@ -193,38 +238,68 @@ This method does not return data.
 [
    {
 		"id": 1,
-		"post": 1,
         "author_name": "Ivan",
         "text": "Cheers!",
         "date_pub": "2020-12-01T20:53:48.443631Z",
-        "approved_comment": true
+        "approved_comment": true,
+		"post": 1
     },
     {
 		"id": 2,
-		"post": 1,
         "author_name": "Ivan",
         "text": "Congratulations!",
         "date_pub": "2020-12-01T20:54:04.905761Z",
-        "approved_comment": true
+        "approved_comment": true,
+		"post": 1
     }
 ]
 ```
 
 
-## Get comment within 'id_comment':
+
+## Get all comments by 'id_post':
+```[GET] [protocol]://www.[domain_name]:[port]/blog/api/posts/<int:id_post>/comments/```
+
+### Example body response:
+```json
+[
+   {
+        "id": 1,
+        "author_name": "Ivan",
+        "text": "Cheers!",
+        "date_pub": "2020-12-01T20:53:48.443631Z",
+        "approved_comment": true,
+        "post": 1
+    },
+    {
+        "id": 2,
+        "author_name": "Ivan",
+        "text": "Congratulations!",
+        "date_pub": "2020-12-01T20:54:04.905761Z",
+        "approved_comment": true,
+        "post": 1
+    }
+]
+```
+*this separation is needed to load less unnecessary data in different activities.
+
+
+
+## Get comment by 'id_comment':
 ```[GET] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>/```
 
 ### Example response body:
 ```json
 {
 	"id": 1,
-	"post": 1,
-    "author_name": "Ivan",
+	"author_name": "Ivan",
     "text": "Cheers!",
     "date_pub": "2020-12-01T20:53:48.443631Z",
-    "approved_comment": true
+    "approved_comment": true,
+	"post": 1
 }
 ```
+
 
 
 ## Create comment:
@@ -252,6 +327,7 @@ This method does not return data.
 ```
 
 
+
 ## Delete comment:
 ```[DELETE] [protocol]://www.[domain_name]:[port]/blog/api/comments/<int:id_comment>```
 
@@ -260,6 +336,7 @@ This method have not request body.
 
 ### Example body response:
 This method does not return data.
+
 
 
 ## Update comment:

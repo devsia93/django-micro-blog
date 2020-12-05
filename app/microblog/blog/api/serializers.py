@@ -2,6 +2,14 @@ from rest_framework import serializers
 from ..models import *
 
 
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'author_name', 'text',
+                  'date_pub', 'approved_comment', 'post')
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -19,11 +27,3 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id', 'slug', 'title')
         # extra_kwargs = {'posts': {'required': False}}
-
-
-class CommentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Comment
-        fields = ('id', 'author_name', 'text',
-                  'date_pub', 'approved_comment', 'post')
