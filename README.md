@@ -129,7 +129,7 @@
 	"slug": "test-api",
 	"title": "test-api",
 	"body": "test-api",
-	"tags":["1","3"]
+	"tags":[1, 3]
 }
 ```
 
