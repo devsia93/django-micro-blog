@@ -17,11 +17,10 @@ def generation_slug(text):
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
     slug = models.SlugField(max_length=75, blank=True, unique=True)
-    # blank - поле может быть пустым
     body = BBCodeTextField(blank=True, db_index=True)
-    # автоматически заполняется при сохранении в бд
     date_pub = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
+    image = models.ImageField(upload_to='post-title', blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:

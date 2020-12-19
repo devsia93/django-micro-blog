@@ -127,3 +127,5 @@ settings.py
 .admin
 .idea*
 app/microblog.tar.xz
+app/microblog/media/post-title/Screenshot_from_2020-12-18_23-20-41.png
+app/microblog/media/post-title/screen_phone.jpeg

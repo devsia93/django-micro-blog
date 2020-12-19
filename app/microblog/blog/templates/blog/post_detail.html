@@ -7,11 +7,13 @@
 {% block content %}
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/post.css' %}">
+<link rel="stylesheet" href="{% static 'css/post.css' %}"/>
+<link id="theme" rel="stylesheet" href="{% static 'css/desert.css' %}"/>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<link rel="stylesheet" href="{% static 'css/view-bigimg.css' %}"/>
 
-
-<div class="container">
-<h1 class='mt-5' style="width=auto">{{ post.title }}</h1>
+<div class="container" id="wrap">
+<h1 class='mt-5' style="width:auto; text-align: center">{{ post.title }}</h1>
     <p>{{ post.body.rendered }}</p>
 </div>
 
@@ -37,5 +39,19 @@
 {% endif %}
 
     {% include 'blog/includes/comment_create_template.html' %}
+
+<script src="{% static 'js/view-bigimg.js' %}"></script>
+    <script>
+    var viewer = new ViewBigimg()
+
+    var wrap = document.getElementById('wrap')
+    // console.log(viewer)
+    wrap.onclick = function (e) {
+      if (e.target.nodeName === 'IMG') {
+        // viewer.show(e.target.src.replace('.jpg', '-big.jpg'))
+        viewer.show(e.target.src)
+      }
+    }
+  </script>
 
 {% endblock content %}

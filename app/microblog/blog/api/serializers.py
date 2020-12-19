@@ -16,8 +16,8 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'slug', 'title', 'body',
                   'tags', 'date_pub', 'comments')
-        extra_kwargs = {'tags': {'required': False},
-                        'comments': {'required': False}}
+        # extra_kwargs = {'tags': {'required': False},
+        #                 'comments': {'required': False}}
 
 
 class TagSerializer(serializers.ModelSerializer):
