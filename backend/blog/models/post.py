@@ -1,17 +1,9 @@
 from django.db import models
 from django.shortcuts import reverse
-from django.utils.text import slugify
 
 from precise_bbcode.fields import BBCodeTextField
 
-from transliterate import translit, get_available_language_codes
-from time import time
-import datetime
-
-
-def generation_slug(text):
-    new_slug = slugify(translit(u"".join(text), 'ru', reversed=True))
-    return new_slug
+from blog.utils import generation_slug
 
 
 class Post(models.Model):
@@ -21,6 +13,9 @@ class Post(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
     image = models.ImageField(upload_to='post-title', blank=True)
+
+    class Meta:
+        ordering = ['-date_pub']
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -52,49 +47,7 @@ class Post(models.Model):
 
     def count_of_approved_comments(self):
         result = 0
-        for i in self.comments.all():
-            if i.approved_comment:
+        for comment in self.comments.all():
+            if comment.is_approved:
                 result += 1
         return result
-
-    class Meta:
-        ordering = ['-date_pub']
-
-
-class Tag(models.Model):
-    title = models.CharField(max_length=15)
-    slug = models.SlugField(max_length=25, unique=True)
-
-    def __str__(self):
-        return self.title
-
-    def get_update_url(self):
-        return reverse('tag_update_url', kwargs={'slug': self.slug})
-
-    def get_delete_url(self):
-        return reverse('tag_delete_url', kwargs={'slug': self.slug})
-
-    def get_absolute_url(self):
-        return reverse('tag_detail_url', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['title']
-
-
-class Comment(models.Model):
-    author_name = models.CharField(max_length=15, db_index=True)
-    date_pub = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments')
-    text = BBCodeTextField()
-    approved_comment = models.BooleanField(default=False)
-
-    def approve(self):
-        self.approved_comment = True
-        self.save()
-
-    def __str__(self):
-        return str(self.text)
-
-    class Meta:
-        ordering = ['approved_comment', 'date_pub']

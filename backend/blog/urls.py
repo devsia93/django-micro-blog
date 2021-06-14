@@ -1,5 +1,4 @@
 from django.urls import path
-from django.urls import include
 from .views import *
 
 
@@ -14,5 +13,4 @@ urlpatterns = [
     path('tag/<str:slug>/', TagDetail.as_view(), name='tag_detail_url'),
     path('tag/<str:slug>/update/', TagUpdate.as_view(), name='tag_update_url'),
     path('tag/<str:slug>/delete/', TagDelete.as_view(), name='tag_delete_url'),
-    path('api/', include(('blog.api.urls', 'api'),  namespace='api')),
 ]

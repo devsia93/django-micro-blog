@@ -3,6 +3,7 @@ from rest_framework.test import APIClient, APITestCase
 from django.contrib.auth.models import User
 from blog.models import *
 
+
 # Include an appropriate `Authorization:` header on all requests.
 
 
@@ -114,8 +115,8 @@ class ApiTestCase(APITestCase):
         self.client.credentials()
         response = self.client.post(
             '/blog/api/comments/', data={'post': 1,
-                                      'author_name': 'api',
-                                      'text': 'test post'})
+                                         'author_name': 'api',
+                                         'text': 'test post'})
         self.assertEqual(response.status_code, 201)
 
     def test_patch_comments_within_token(self):
